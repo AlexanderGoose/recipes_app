@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/recipes.css">
+    <script src="/static/recipe.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ojuju:wght@200..800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <!-- <h1 class="top-left-corner">Goose's Recipes!</h1> -->
+
+    <div class="container-main">
+        
+        <div class="navbar">
+            <a href= "{{ url_for('home') }}">Home</a>
+            <a href= "{{ url_for('recipes') }}">Recipes</a>
+            <a href="about.html">About</a>
+        </div>
+        
+        {% block content %}
+        {% endblock %}
+    </div>
+    <h1 class="top-left-corner">Goose's Recipes!</h1>
+</body>
+</html>

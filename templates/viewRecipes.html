@@ -1,0 +1,30 @@
+{% extends 'template.html' %}
+
+<!-- {% block title %}
+recipes
+{% endblock %} -->
+
+{% block content %}
+
+<div class="print-recipe-container">
+
+    <h1>Recipe Name: {{ recipe_name }}</h1>
+    
+    <!-- Displays ingredients -->
+    <h3>Ingredients:</h3>
+    <ul>
+        {% for ing in ingredients %}
+            <li>{{ ing }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Displays instructions -->
+    <h3>Instructions:</h3>
+    <ol>
+        {% for instr in instructions %}
+            <li>{{ instr }}</li>
+        {% endfor %}
+    </ol>
+
+</div>
+{% endblock content %}
