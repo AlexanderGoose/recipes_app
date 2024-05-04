@@ -40,21 +40,10 @@ def recipes(dbName):
         # recreate tables, now should be empty
         # dbAPI.create(dbName)
         return redirect(url_for('home'))
-    
-    ######## TO DO ########
-    # impliment SQL to pull all recipe names and their ID's from db
-    # within html file, for loop over it all
 
-    conn = sqlite3.connect(dbName)
-    cur = conn.cursor()
-
-    # grab all recipe names
-    cur.execute("SELECT recName, recID FROM Recipe")
-    recipes = cur.fetchall()
-    # recipe_names = [row[0] for row in cur.fetchall()]
-    # recIDs = [row[1] for row in cur.fetchall()]
-
-    conn.close()
+    # here we grab the recipe names
+    dbAPI = DataBaseAPI()
+    recipes = dbAPI.fetchRecipeNames(dbName)
 
     recipe_names = [recipe[0] for recipe in recipes]
     recIDs = [recipe[1] for recipe in recipes]
@@ -71,23 +60,12 @@ as the recID (int). Current example: http://127.0.0.1:5000/viewRec/test.db/1
 """
 @app.route('/viewRec/<dbName>/<int:recID>', methods=['GET'])
 def viewRec(dbName, recID):
-    # first, retrieve recipes from db
-    conn = sqlite3.connect(dbName)
-    cur = conn.cursor()
 
-    # grabs recipe name
-    cur.execute("SELECT recName FROM Recipe WHERE recID = ?", (recID,))
-    recipe_name = cur.fetchone()[0]
+    dbAPI = DataBaseAPI()
+    recipe_name, ingredients, instructions = dbAPI.getFullRecipe(dbName, recID)
 
-    # grabs all ingredients
-    cur.execute("SELECT * FROM Ingredient WHERE recID = ?", (recID,))
-    ingredients = [row[2] for row in cur.fetchall()]
-
-    # grabs all instructions
-    cur.execute("SELECT * FROM Instruction WHERE recID = ?", (recID,))
-    instructions = [row[2] for row in cur.fetchall()]
-
-    conn.close()
+    if recipe_name is None:
+        return "Recipe not found :(", 404
 
     return render_template('viewRecipes.html', recipe_name=recipe_name, 
                            ingredients=ingredients, instructions=instructions)
