@@ -1,3 +1,23 @@
 {% extends 'template.html' %}
 
 <!-- This page will list out all recipes and link to instructions -->
+{% block content %}
+<ul>
+    {% for name in recipe_names %}
+        <li>{{ name }}</li> 
+    {% endfor %}
+</ul>
+
+<br><br><br>
+<h3>FOR TESTING/ADMIN ONLY</h3><br>
+<h3>USER BEWARE!!!</h3>
+
+<!-- Sends a post to /recips route. enacts the teardown
+method from dbAPI. Deletes tables. Used primarily after testing
+of adding multiple duplicate and/or empty recipes into db. If testing
+yields unwanted results, teardown is enacted. -->
+<form action="/recipes/test.db" method="post" onsubmit="return confirm('Are you sure you want to delete the database? This action cannot be undone.');">
+    <label for="delete_button">DELETE DATABASE</label>
+    <input type="submit">
+</form>
+{% endblock %}
