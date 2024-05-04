@@ -75,7 +75,65 @@ class DataBaseAPI():
             print(f'Error dropping tables: {e}')
         finally:
             conn.close() 
-    
+
+
+    # --------------------------------- fetch recipe name
+    """
+    Queries the DB for the name and ID. Gets sent to /recipes so that
+    each name can be a list item as a link to the full recipe
+    """
+    def fetchRecipeNames(self, dbName):
+        try:
+            conn = sqlite3.connect(dbName)
+            cur = conn.cursor()
+
+            # grab all recipe names
+            cur.execute("SELECT recName, recID FROM Recipe")
+            recipes = cur.fetchall()
+
+            # recipe_names = [recipe[0] for recipe in recipes]
+            # recIDs = [recipe[1] for recipe in recipes]
+            conn.commit()
+            return recipes
+        
+        except sqlite3.Error as e:
+            print(f'Error retrieving names: {e}')
+        
+        finally:
+            conn.close() 
+
+
+    # --------------------------------- get full recipe
+    """
+    Grabs recipe name, all ingredients, and instructions from
+    all three tables. 
+    """
+    def getFullRecipe(self, dbName, recID):
+        try:
+            # first, retrieve recipes from db
+            conn = sqlite3.connect(dbName)
+            cur = conn.cursor()
+
+            # grabs recipe name
+            cur.execute("SELECT recName FROM Recipe WHERE recID = ?", (recID,))
+            recipe_name = cur.fetchone()[0]
+
+            # grabs all ingredients
+            cur.execute("SELECT * FROM Ingredient WHERE recID = ?", (recID,))
+            ingredients = [row[2] for row in cur.fetchall()]
+
+            # grabs all instructions
+            cur.execute("SELECT * FROM Instruction WHERE recID = ?", (recID,))
+            instructions = [row[2] for row in cur.fetchall()]
+
+            return recipe_name, ingredients, instructions
+        
+        except sqlite3.Error as e:
+            print(f'Error retrieving full recipe: {e}')
+        
+        finally:
+            conn.close() 
+        
 # --------------------------------- testing 
     
 if __name__ == "__main__":
