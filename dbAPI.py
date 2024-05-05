@@ -1,12 +1,10 @@
 import sqlite3
-import sys
 from test_data import data
 
-#############################################
-# 
 
 # CONSISTENCIES
 # - ID is always capitalized
+# - Cammel case is used
 
 
 class DataBaseAPI():
