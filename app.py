@@ -48,9 +48,9 @@ def recipes(dbName):
     recipe_names = [recipe[0] for recipe in recipes]
     recIDs = [recipe[1] for recipe in recipes]
 
-    return render_template('recipes.html', recipe_names=recipe_names,
-                           recIDs=recIDs)
-
+    # return render_template('recipes.html', recipe_names=recipe_names,
+    #                        recIDs=recIDs)
+    return render_template('recipes.html', recipes=recipes)
 
 
 # -------------------------------------------- view recipe
@@ -124,3 +124,4 @@ if __name__ == '__main__':
         # .mode column
     # to quite SQL:
         # .quit
+# TO RUN VIRTUAL ENVIRONMENT: source venv/bin/activate
