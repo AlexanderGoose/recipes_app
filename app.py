@@ -12,7 +12,7 @@ app = Flask(__name__)
 Home screen will be a welcome and possibly a search bar.
 User will then navigate via navbar to where they want to go
 """
-@app.route('/home')
+@app.route('/')
 def home():
     # if DB doesn't exist, create it!
     dbAPI = DataBaseAPI()
