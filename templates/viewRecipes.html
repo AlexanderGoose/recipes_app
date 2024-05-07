@@ -6,15 +6,16 @@ recipes
 
 {% block content %}
 
-<div class="print-recipe-container">
+<div class="print_recipe_container">
 
-    <h1>Recipe Name: {{ recipe_name }}</h1>
+    <!-- Recipe name -->
+    <h1>{{ recipe_name }}</h1>
     
     <!-- Displays ingredients -->
     <h3>Ingredients:</h3>
     <ul>
         {% for ing in ingredients %}
-            <li>{{ ing }}</li>
+            <li class="viewrec_item">{{ ing }}</li>
         {% endfor %}
     </ul>
 
@@ -22,7 +23,7 @@ recipes
     <h3>Instructions:</h3>
     <ol>
         {% for instr in instructions %}
-            <li>{{ instr }}</li>
+            <li class="viewrec_item">{{ instr }}</li>
         {% endfor %}
     </ol>
 

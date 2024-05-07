@@ -1,3 +1,71 @@
+/* ----------------------------- General Styling */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 300; 
+    background-color: #F5FFFA;
+    color: #2F4F4F;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* ----------------------------- template.html */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.navbar_item {
+    color:#2F4F4F;
+}
+
+
+/* ----------------------------- addRecipe.html */
+.ingredient {
+    /* border-radius: 50px; */
+    margin-bottom: 5px;
+}
+
+.instruction {
+    margin-bottom: 5px;
+}
+
+.add_recipe_container {
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+
+/* ----------------------------- index.html */
+.slogan {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.homepage_text {
+    margin-left: 25%;
+    margin-right: 25%;
+    text-align: center;
+}
+
+
+/* ----------------------------- recipes.html */
+.recipe_list_container {
+    margin-top: 25px;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.recipe_link {
+    color:#2F4F4F; 
+}
+
+
+/* ----------------------------- viewRecipes.html */
 .ingredient {
     width: 50%;
 }
@@ -6,3 +74,74 @@
     width: 50%;
 }
 
+.print_recipe_container {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+
+/* ----------------------------- about.html */
+
+
+
+/* ----------------------------- MEDIA SCREENING 
+increases font size for smaller screens */
+@media only screen and (max-width: 800px) {
+
+    /* ----------------------------- template.html */
+    .navbar_item {
+        font-size: 20px;
+    }
+
+    .navbar {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    p {
+      font-size: 20px; 
+    }
+
+
+    /* ----------------------------- addRecipe.html */
+
+
+    /* ----------------------------- index.html */
+    .slogan {
+        font-size: 30px;
+    }
+
+    .homepage_text {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+
+    /* ----------------------------- recipes.html */
+    .recipe_list_container {
+        margin-left: 5%;
+        margin-right: 5%;   
+    }
+
+    .recipe_list_title {
+        font-size: 30px;
+    }
+
+    .recipe_link {
+        font-size: 20px;
+    }
+
+
+    /* ----------------------------- viewRecipes.html */
+    .viewrec_item {
+        font-size: 20px;
+    }
+
+    .print_recipe_container {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+
+    /* ----------------------------- about.html */
+  }

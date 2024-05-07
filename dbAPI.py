@@ -9,53 +9,74 @@ from test_data import data
 
 class DataBaseAPI():
     # --------------------------------- create table
+    """
+    Creates three new tables, Recipe, Ingredient, Instruction
+    """
     def create(self, dbName):
-        conn = sqlite3.connect(dbName)
-        cur = conn.cursor()
+        try:
+            conn = sqlite3.connect(dbName)
+            cur = conn.cursor()
 
-        cur.execute("""CREATE TABLE IF NOT EXISTS Recipe(
-                    recID INTEGER PRIMARY KEY, 
-                    recName VARCHAR(20)
-                    );""")
+            cur.execute("""CREATE TABLE IF NOT EXISTS Recipe(
+                        recID INTEGER PRIMARY KEY, 
+                        recName VARCHAR(20)
+                        );""")
+            
+            cur.execute("""CREATE TABLE IF NOT EXISTS Ingredient(
+                        ingID INTEGER PRIMARY KEY, 
+                        recID INTEGER, 
+                        ing VARCHAR(100),
+                        FOREIGN KEY (recID) REFERENCES Recipe(recID)
+                        );""")
+            
+            cur.execute("""CREATE TABLE IF NOT EXISTS Instruction(
+                        instructionID INTEGER PRIMARY KEY, 
+                        recID INTEGER, 
+                        instruction VARCHAR(100),
+                        FOREIGN KEY (recID) REFERENCES Recipe(recID)
+                        );""")
+
+            conn.commit()
+
+        except sqlite3.Error as e:
+            print(f'Error creating tables: {e}')
         
-        cur.execute("""CREATE TABLE IF NOT EXISTS Ingredient(
-                    ingID INTEGER PRIMARY KEY, 
-                    recID INTEGER, 
-                    ing VARCHAR(100),
-                    FOREIGN KEY (recID) REFERENCES Recipe(recID)
-                    );""")
-        
-        cur.execute("""CREATE TABLE IF NOT EXISTS Instruction(
-                    instructionID INTEGER PRIMARY KEY, 
-                    recID INTEGER, 
-                    instruction VARCHAR(100),
-                    FOREIGN KEY (recID) REFERENCES Recipe(recID)
-                    );""")
-
-
-        conn.commit()
-        conn.close()
+        finally:
+            conn.close() 
 
 
     # --------------------------------- fill table
+    """
+    Given the intake parameters, inserts relavent info into correct tables.
+    """
     def fill(self, dbName, recName, ingredients, instructions):
-        conn = sqlite3.connect(dbName)
-        cur = conn.cursor()
+        try:
+            conn = sqlite3.connect(dbName)
+            cur = conn.cursor()
 
-        cur.execute("INSERT INTO Recipe (recName) VALUES(?)", (recName,))
-        recID = cur.lastrowid
+            cur.execute("INSERT INTO Recipe (recName) VALUES(?)", (recName,))
+            recID = cur.lastrowid
 
-        for ing in ingredients:
-            cur.execute("INSERT INTO Ingredient (recID, ing) VALUES(?, ?)", (recID, ing))
+            for ing in ingredients:
+                cur.execute("INSERT INTO Ingredient (recID, ing) VALUES(?, ?)", (recID, ing))
 
-        for instruction in instructions:
-            cur.execute("INSERT INTO Instruction (recID, instruction) VALUES(?, ?)", (recID, instruction))
+            for instruction in instructions:
+                cur.execute("INSERT INTO Instruction (recID, instruction) VALUES(?, ?)", (recID, instruction))
 
-        conn.commit()
-        conn.close()
+            conn.commit()
+        
+        except sqlite3.Error as e:
+            print(f'Error filling tables: {e}')
+        
+        finally:
+            conn.close() 
 
     
     # --------------------------------- tear down
+    """
+    used to delete all tables so that they can be restarted. 
+    use case is for testing the db and deleting after testing.
+    """
     def teardown(self, dbName):
         try:
             conn = sqlite3.connect(dbName)
@@ -69,8 +90,10 @@ class DataBaseAPI():
             cur.execute("DROP TABLE IF EXISTS Instruction;")
 
             conn.commit()
+
         except sqlite3.Error as e:
             print(f'Error dropping tables: {e}')
+        
         finally:
             conn.close() 
 
@@ -89,9 +112,6 @@ class DataBaseAPI():
             cur.execute("SELECT recName, recID FROM Recipe")
             recipes = cur.fetchall()
 
-            # recipe_names = [recipe[0] for recipe in recipes]
-            # recIDs = [recipe[1] for recipe in recipes]
-            conn.commit()
             return recipes
         
         except sqlite3.Error as e:

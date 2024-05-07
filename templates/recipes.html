@@ -2,14 +2,22 @@
 
 <!-- This page will list out all recipes and link to instructions -->
 {% block content %}
-<h3>Recipes:</h3>
-<ul>
-    <!-- recipes is a tuple of name, recID pulled in fetchRecipeNames.
-    creates a list element for each recipe in the DB and links to it -->
-    {% for name, recID in recipes %}
-        <li><a class="recipe_link" href="{{ url_for('viewRec', dbName='recipe.db', recID=recID) }}">{{ name }}</a></li>
-    {% endfor %}
-</ul>
+<div class="recipe_list_container">
+    <h3 class="recipe_list_title">Recipes:</h3>
+    <ul>
+        <!-- recipes is a tuple of name, recID pulled in fetchRecipeNames.
+        creates a list element for each recipe in the DB and links to it -->
+        {% for name, recID in recipes %}
+        
+        <div class="reicpe_item_link">
+            <li><a class="recipe_link" href="{{ url_for('viewRec', dbName='recipe.db', recID=recID) }}">{{ name }}</a></li>
+            <!-- will eventually have an edit button for each recipe... -->
+            <!-- <button>Edit</button> -->
+        </div>
+            
+        {% endfor %}
+    </ul>
+</div>
 
 <br><br><br>
 <h3>FOR TESTING/ADMIN ONLY</h3>
@@ -18,8 +26,9 @@
 method from dbAPI. Deletes tables. Used primarily after testing
 of adding multiple duplicate and/or empty recipes into db. If testing
 yields unwanted results, teardown is enacted. -->
-<form action="/recipes/recipe.db" method="post" onsubmit="return confirm('Are you sure you want to delete the database? This action cannot be undone.');">
+
+<!-- <form action="/recipes/recipe.db" method="post" onsubmit="return confirm('Are you sure you want to delete the database? This action cannot be undone.');">
     <label for="delete_button">DELETE DATABASE</label>
     <input type="submit" value="DELETE">
-</form>
+</form> -->
 {% endblock %}
