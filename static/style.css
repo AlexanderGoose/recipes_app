@@ -28,15 +28,17 @@ a {
 .ingredient {
     /* border-radius: 50px; */
     margin-bottom: 5px;
+    width: 50%;
 }
 
 .instruction {
     margin-bottom: 5px;
+    width: 50%;
 }
 
 .add_recipe_container {
     margin-top: 25px;
-    margin-left: 25px;
+    text-align: center;
 }
 
 
@@ -66,14 +68,6 @@ a {
 
 
 /* ----------------------------- viewRecipes.html */
-.ingredient {
-    width: 50%;
-}
-
-.instruction {
-    width: 50%;
-}
-
 .print_recipe_container {
     margin-left: 15%;
     margin-right: 15%;
@@ -104,6 +98,28 @@ increases font size for smaller screens */
 
 
     /* ----------------------------- addRecipe.html */
+    label {
+        font-size: 20px;
+    }
+    #new_recipe_name {
+        font-size: 20px;
+    }
+    .ingredient {
+        /* border-radius: 50px; */
+        margin-bottom: 5px;
+        width: 90%;
+        font-size: 20px;
+    }
+    
+    .instruction {
+        margin-bottom: 5px;
+        width: 90%;
+        font-size: 20px;
+    }
+
+    #submit_recipe {
+        font-size: 20px;
+    }
 
 
     /* ----------------------------- index.html */
