@@ -15,9 +15,9 @@ User will then navigate via navbar to where they want to go
 @app.route('/')
 def home():
     # if DB doesn't exist, create it!
-    dbAPI = DataBaseAPI()
-    dbName = 'recipe.db'
-    dbAPI.create(dbName)
+    # dbAPI = DataBaseAPI()
+    # dbName = 'recipe.db'
+    # dbAPI.create(dbName)
     return render_template('index.html')
 
 
