@@ -16,9 +16,9 @@ User will then navigate via navbar to where they want to go
 @app.route('/')
 def home():
     # if DB doesn't exist, create it!
-    # dbAPI = DataBaseAPI()
+    dbAPI = DataBaseAPI()
     # dbName = 'recipe.db'
-    # dbAPI.create(dbName)
+    dbAPI.create()
     # conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
     # conn.close()
     #return "Database connection successful."
