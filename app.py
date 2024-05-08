@@ -100,12 +100,13 @@ def add_recipe():
         instructions = [inst for inst in instructions if inst.strip()] # filter out empty entries
 
         rec_id = 100
-        dbName = 'recipe.db'
+        #dbName = 'recipe.db'
 
         # creating an instance of the class
         dbAPI = DataBaseAPI()
-        dbAPI.fill(dbName, recipe_name, ingredients, instructions)
-
+        #dbAPI.fill(dbName, recipe_name, ingredients, instructions)
+        dbAPI.fill(recipe_name, ingredients, instructions)
+        
         return render_template('viewRecipes.html', recipe_name=recipe_name, 
                                ingredients=ingredients, instructions=instructions,
                                rec_id=rec_id)
