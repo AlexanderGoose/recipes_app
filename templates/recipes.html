@@ -10,7 +10,8 @@
         {% for name, recID in recipes %}
         
         <div class="reicpe_item_link">
-            <li><a class="recipe_link" href="{{ url_for('viewRec', dbName='recipe.db', recID=recID) }}">{{ name }}</a></li>
+            <!-- <li><a class="recipe_link" href="{{ url_for('viewRec', dbName='recipe.db', recID=recID) }}">{{ name }}</a></li> -->
+            <li><a class="recipe_link" href="{{ url_for('viewRec', recID=recID) }}">{{ name }}</a></li>
             <!-- will eventually have an edit button for each recipe... -->
             <!-- <button>Edit</button> -->
         </div>
