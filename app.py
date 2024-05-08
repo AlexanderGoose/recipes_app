@@ -32,8 +32,10 @@ This route will simply show a list of all recipes that the user
 has access to. When a recipe is clicked, it will take to viewRec
 and fill in the <dbName> and <int:recID>
 """
-@app.route('/recipes/<dbName>', methods=['GET', 'POST'])
-def recipes(dbName):
+# @app.route('/recipes/<dbName>', methods=['GET', 'POST'])
+# def recipes(dbName):
+@app.route('/recipes', methods=['GET', 'POST'])
+def recipes():
     
     # teardown
     # if request.method == 'POST':
