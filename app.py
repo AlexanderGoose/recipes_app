@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from test_data import data
 import sqlite3
+import psycopg2
 from dbAPI import DataBaseAPI
 
 app = Flask(__name__)
@@ -18,7 +19,10 @@ def home():
     # dbAPI = DataBaseAPI()
     # dbName = 'recipe.db'
     # dbAPI.create(dbName)
-    return render_template('index.html')
+    conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+    conn.close()
+    return "Database connection successful."
+    # return render_template('index.html')
 
 
 
