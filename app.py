@@ -19,10 +19,10 @@ def home():
     # dbAPI = DataBaseAPI()
     # dbName = 'recipe.db'
     # dbAPI.create(dbName)
-    conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
-    conn.close()
-    return "Database connection successful."
-    # return render_template('index.html')
+    # conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+    # conn.close()
+    #return "Database connection successful."
+    return render_template('index.html')
 
 
 
@@ -36,18 +36,19 @@ and fill in the <dbName> and <int:recID>
 def recipes(dbName):
     
     # teardown
-    if request.method == 'POST':
-        dbAPI = DataBaseAPI()
-        # delete all tables to get rid of the db
-        dbAPI.teardown(dbName)
+    # if request.method == 'POST':
+    #     dbAPI = DataBaseAPI()
+    #     # delete all tables to get rid of the db
+    #     dbAPI.teardown(dbName)
 
-        # recreate tables, now should be empty
-        # dbAPI.create(dbName)
-        return redirect(url_for('home'))
+    #     # recreate tables, now should be empty
+    #     # dbAPI.create(dbName)
+    #     return redirect(url_for('home'))
 
     # here we grab the recipe names
     dbAPI = DataBaseAPI()
-    recipes = dbAPI.fetchRecipeNames(dbName)
+    #recipes = dbAPI.fetchRecipeNames(dbName)
+    recipes = dbAPI.fetchRecipeNames()
 
     recipe_names = [recipe[0] for recipe in recipes]
     recIDs = [recipe[1] for recipe in recipes]
@@ -62,11 +63,12 @@ def recipes(dbName):
 Routes to ONE recipe at a time. The URL includes the dbName as well
 as the recID (int). Current example: http://127.0.0.1:5000/viewRec/test.db/1
 """
-@app.route('/viewRec/<dbName>/<int:recID>', methods=['GET'])
-def viewRec(dbName, recID):
+#@app.route('/viewRec/<dbName>/<int:recID>', methods=['GET'])
+@app.route('/viewRec/<int:recID>', methods=['GET'])
+def viewRec(recID):
 
     dbAPI = DataBaseAPI()
-    recipe_name, ingredients, instructions = dbAPI.getFullRecipe(dbName, recID)
+    recipe_name, ingredients, instructions = dbAPI.getFullRecipe(recID)
 
     if recipe_name is None:
         return "Recipe not found :(", 404
