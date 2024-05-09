@@ -22,21 +22,21 @@ class DataBaseAPI():
             cur = conn.cursor()
 
             cur.execute("""CREATE TABLE IF NOT EXISTS Recipe(
-                        recID INTEGER PRIMARY KEY, 
-                        recName VARCHAR(20)
+                        recID SERIAL PRIMARY KEY, 
+                        recName VARCHAR(255)
                         );""")
             
             cur.execute("""CREATE TABLE IF NOT EXISTS Ingredient(
-                        ingID INTEGER PRIMARY KEY, 
+                        ingID SERIAL PRIMARY KEY, 
                         recID INTEGER, 
-                        ing VARCHAR(100),
+                        ing VARCHAR(255),
                         FOREIGN KEY (recID) REFERENCES Recipe(recID)
                         );""")
             
             cur.execute("""CREATE TABLE IF NOT EXISTS Instruction(
-                        instructionID INTEGER PRIMARY KEY, 
+                        instructionID SERIAL PRIMARY KEY, 
                         recID INTEGER, 
-                        instruction VARCHAR(100),
+                        instruction TEXT,
                         FOREIGN KEY (recID) REFERENCES Recipe(recID)
                         );""")
 
@@ -105,7 +105,8 @@ class DataBaseAPI():
             print(f'Error dropping tables: {e}')
         
         finally:
-            conn.close() 
+            if conn is not None:
+                conn.close() 
 
 
     # --------------------------------- fetch recipe name
@@ -173,15 +174,15 @@ class DataBaseAPI():
         
 # --------------------------------- testing 
     
-if __name__ == "__main__":
-    dbName = 'test.db'
+# if __name__ == "__main__":
+#     dbName = 'test.db'
 
-    newDB = DataBaseAPI()
-    newDB.create(dbName)
+#     newDB = DataBaseAPI()
+#     newDB.create(dbName)
 
-    for recipe in data['recipes']:
-        # recID = recipe['recID']
-        recName = recipe['recName']
-        recIngredients = recipe['recIngredients']
-        recInstructions = recipe['recInstructions']
-        newDB.fill(dbName, recName, recIngredients, recInstructions)
+#     for recipe in data['recipes']:
+#         # recID = recipe['recID']
+#         recName = recipe['recName']
+#         recIngredients = recipe['recIngredients']
+#         recInstructions = recipe['recInstructions']
+#         newDB.fill(dbName, recName, recIngredients, recInstructions)
