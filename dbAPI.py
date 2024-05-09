@@ -2,6 +2,7 @@ import sqlite3
 from test_data import data
 import psycopg2
 from psycopg2 import Error
+import os
 
 
 # CONSISTENCIES
@@ -16,9 +17,16 @@ class DataBaseAPI():
     """
     #def create(self, dbName):
     def create(self):
+        conn = None
         try:
             #conn = sqlite3.connect(dbName)
-            conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+            # Ensure DATABASE_URL is available in environment variables
+            database_url = os.getenv('DATABASE_URL')
+            if database_url is None:
+                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            conn = psycopg2.connect(database_url)
+            # conn = psycopg2.connect("postgres://jqhmaedvqbpdgu:1528b6e4245b65c204cca5f7d6afde2495ae58cbab3ca29fe9f7481a022e30ec@ec2-52-45-168-55.compute-1.amazonaws.com:5432/ddlhjslin3329p")
+            # conn = psycopg2.connect(os.environ['DATABASE_URL'])
             cur = conn.cursor()
 
             cur.execute("""CREATE TABLE IF NOT EXISTS Recipe(
@@ -47,7 +55,8 @@ class DataBaseAPI():
             print(f'Error creating tables: {e}')
         
         finally:
-            conn.close() 
+            if conn is not None:
+                conn.close() 
 
 
     # --------------------------------- fill table
@@ -56,9 +65,10 @@ class DataBaseAPI():
     """
     #def fill(self, dbName, recName, ingredients, instructions):
     def fill(self, recName, ingredients, instructions):
+        conn = None
         try:
             #conn = sqlite3.connect(dbName)
-            conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+            conn = psycopg2.connect("postgres://jqhmaedvqbpdgu:1528b6e4245b65c204cca5f7d6afde2495ae58cbab3ca29fe9f7481a022e30ec@ec2-52-45-168-55.compute-1.amazonaws.com:5432/ddlhjslin3329p")
             cur = conn.cursor()
 
             #cur.execute("INSERT INTO Recipe (recName) VALUES(?)", (recName,))
@@ -79,7 +89,8 @@ class DataBaseAPI():
             print(f'Error filling tables: {e}')
         
         finally:
-            conn.close() 
+            if conn is not None:
+                conn.close() 
 
     
     # --------------------------------- tear down
@@ -116,9 +127,11 @@ class DataBaseAPI():
     """
     #def fetchRecipeNames(self, dbName):
     def fetchRecipeNames(self):
+        conn = None
         try:
             #conn = sqlite3.connect(dbName)
-            conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+            conn = psycopg2.connect("postgres://jqhmaedvqbpdgu:1528b6e4245b65c204cca5f7d6afde2495ae58cbab3ca29fe9f7481a022e30ec@ec2-52-45-168-55.compute-1.amazonaws.com:5432/ddlhjslin3329p")
+            # conn = psycopg2.connect('DATABASE_URL')
             cur = conn.cursor()
 
             # grab all recipe names
@@ -132,7 +145,8 @@ class DataBaseAPI():
             print(f'Error retrieving names: {e}')
         
         finally:
-            conn.close() 
+            if conn is not None:
+                conn.close() 
 
 
     # --------------------------------- get full recipe
@@ -142,10 +156,12 @@ class DataBaseAPI():
     """
     #def getFullRecipe(self, dbName, recID):
     def getFullRecipe(self, recID):
+        conn = None
         try:
             # first, retrieve recipes from db
             # conn = sqlite3.connect(dbName)
-            conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+            # conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
+            conn = psycopg2.connect('postgres://jqhmaedvqbpdgu:1528b6e4245b65c204cca5f7d6afde2495ae58cbab3ca29fe9f7481a022e30ec@ec2-52-45-168-55.compute-1.amazonaws.com:5432/ddlhjslin3329p')
             cur = conn.cursor()
 
             # grabs recipe name
@@ -170,7 +186,8 @@ class DataBaseAPI():
             print(f'Error retrieving full recipe: {e}')
         
         finally:
-            conn.close() 
+            if conn is not None:
+                conn.close() 
         
 # --------------------------------- testing 
     
