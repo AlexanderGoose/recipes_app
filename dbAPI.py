@@ -82,6 +82,7 @@ class DataBaseAPI():
             # Using RETURNING clause to get the inserted row's ID
             cur.execute("INSERT INTO Recipe (recName) VALUES(%s) RETURNING recID", (recName,))
             recID = cur.fetchone()[0]  # Fetch the returned recID from the INSERT
+            print(f"Generated recID: {recID}")
 
             for ing in ingredients:
                 #cur.execute("INSERT INTO Ingredient (recID, ing) VALUES(?, ?)", (recID, ing))
