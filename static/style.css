@@ -58,8 +58,8 @@ a {
 /* ----------------------------- recipes.html */
 .recipe_list_container {
     margin-top: 25px;
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 .recipe_link {
@@ -75,7 +75,10 @@ a {
 
 
 /* ----------------------------- about.html */
-
+#about-container {
+    margin-left: 15%;
+    margin-right: 15%;
+}
 
 
 /* ----------------------------- MEDIA SCREENING 
@@ -160,4 +163,8 @@ increases font size for smaller screens */
 
 
     /* ----------------------------- about.html */
+    #about-container {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
   }
