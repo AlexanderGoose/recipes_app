@@ -1,4 +1,4 @@
-import sqlite3
+# import sqlite3
 from test_data import data
 import psycopg2
 from psycopg2 import Error
@@ -107,26 +107,26 @@ class DataBaseAPI():
     used to delete all tables so that they can be restarted. 
     use case is for testing the db and deleting after testing.
     """
-    def teardown(self, dbName):
-        try:
-            conn = sqlite3.connect(dbName)
-            cur = conn.cursor()
+    # def teardown(self, dbName):
+    #     try:
+    #         conn = sqlite3.connect(dbName)
+    #         cur = conn.cursor()
 
-            # Disable foreign key constraints
-            cur.execute("PRAGMA foreign_keys = OFF;")
+    #         # Disable foreign key constraints
+    #         cur.execute("PRAGMA foreign_keys = OFF;")
 
-            cur.execute("DROP TABLE IF EXISTS Recipe;")
-            cur.execute("DROP TABLE IF EXISTS Ingredient;")
-            cur.execute("DROP TABLE IF EXISTS Instruction;")
+    #         cur.execute("DROP TABLE IF EXISTS Recipe;")
+    #         cur.execute("DROP TABLE IF EXISTS Ingredient;")
+    #         cur.execute("DROP TABLE IF EXISTS Instruction;")
 
-            conn.commit()
+    #         conn.commit()
 
-        except sqlite3.Error as e:
-            print(f'Error dropping tables: {e}')
+    #     except sqlite3.Error as e:
+    #         print(f'Error dropping tables: {e}')
         
-        finally:
-            if conn is not None:
-                conn.close() 
+    #     finally:
+    #         if conn is not None:
+    #             conn.close() 
 
 
     # --------------------------------- fetch recipe name
@@ -153,7 +153,6 @@ class DataBaseAPI():
 
             return recipes
         
-        #except sqlite3.Error as e:
         except Error as e:
             print(f'Error retrieving names: {e}')
         
@@ -172,10 +171,6 @@ class DataBaseAPI():
         conn = None
         try:
             # first, retrieve recipes from db
-            # conn = sqlite3.connect(dbName)
-            # conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
-            # conn = psycopg2.connect('postgres://jqhmaedvqbpdgu:1528b6e4245b65c204cca5f7d6afde2495ae58cbab3ca29fe9f7481a022e30ec@ec2-52-45-168-55.compute-1.amazonaws.com:5432/ddlhjslin3329p')
-            
             database_url = os.getenv('DATABASE_URL')
             if database_url is None:
                 raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
@@ -184,29 +179,100 @@ class DataBaseAPI():
             cur = conn.cursor()
 
             # grabs recipe name
-            #cur.execute("SELECT recName FROM Recipe WHERE recID = ?", (recID,))
             cur.execute("SELECT recName FROM Recipe WHERE recID = %s", (recID,))
             recipe_name = cur.fetchone()[0]
 
             # grabs all ingredients
-            #cur.execute("SELECT * FROM Ingredient WHERE recID = ?", (recID,))
             cur.execute("SELECT * FROM Ingredient WHERE recID = %s", (recID,))
             ingredients = [row[2] for row in cur.fetchall()]
 
             # grabs all instructions
-            #cur.execute("SELECT * FROM Instruction WHERE recID = ?", (recID,))
             cur.execute("SELECT * FROM Instruction WHERE recID = %s", (recID,))
             instructions = [row[2] for row in cur.fetchall()]
 
             return recipe_name, ingredients, instructions
         
-        #except sqlite3.Error as e:
         except Error as e:
             print(f'Error retrieving full recipe: {e}')
         
         finally:
             if conn is not None:
                 conn.close() 
+
+
+    # def editRecipe(self, recName, ingredients, instructions, recID):
+    #     conn = None
+    #     try:
+    #         database_url = os.getenv('DATABASE_URL')
+    #         if database_url is None:
+    #             raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+    #         conn = psycopg2.connect(database_url)
+            
+    #         cur = conn.cursor()
+
+    #         # cur.execute("UPDATE Recipe SET name = %s, ingredients = %s, instructions = %s, WHERE recID = %s",
+    #         #             (recName, ingredients, instructions))
+
+    #         cur.execute("UPDATE Recipe SET recName=%s WHERE recID=%s", (recName, recID,))
+
+    #         # Delete old ingredients and instructions and insert new ones
+    #         cur.execute("DELETE FROM Ingredient WHERE recID=%s", (recID,))
+    #         for ing in ingredients:
+    #             cur.execute("INSERT INTO Ingredient (recID, ing) VALUES (%s, %s)", (recID, ing))
+            
+    #         cur.execute("DELETE FROM Instruction WHERE recID=%s", (recID,))
+    #         for instr in instructions:
+    #             cur.execute("INSERT INTO Instruction (recID, instruction) VALUES (%s, %s)", (recID, instr))
+
+    #         conn.commit()
+
+    #     except Error as e:
+    #         print(f'Error retrieving names: {e}')
+        
+    #     finally:
+    #         if conn is not None:
+    #             conn.close() 
+            
+    def editRecipe(self, origName, recName, ingredients, instructions):
+        conn = None
+        try:
+            database_url = os.getenv('DATABASE_URL')
+            if database_url is None:
+                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            conn = psycopg2.connect(database_url)
+            
+            cur = conn.cursor()
+
+            # grab recID using name (FIGURE OUT HOW TO SEND IT VIA ROUTE)
+            # use original name to avoid conflicts after changing the name.
+            cur.execute("SELECT recID from Recipe WHERE recName=%s", (origName,))
+            result = cur.fetchone()
+            if result is None:
+                raise Exception("RECIPE NOT FOUND.")
+            else:
+                recID = result[0]
+
+            # update name
+            cur.execute("UPDATE Recipe SET recName=%s WHERE recID=%s", (recName, recID))
+
+            # Delete old ingredients and instructions and insert new ones
+            cur.execute("DELETE FROM Ingredient WHERE recID=%s", (recID,))
+            for ing in ingredients:
+                cur.execute("INSERT INTO Ingredient (recID, ing) VALUES (%s, %s)", (recID, ing))
+            
+            cur.execute("DELETE FROM Instruction WHERE recID=%s", (recID,))
+            for instr in instructions:
+                cur.execute("INSERT INTO Instruction (recID, instruction) VALUES (%s, %s)", (recID, instr))
+
+            conn.commit()
+
+        except Error as e:
+            print(f'Error retrieving names: {e}')
+        
+        finally:
+            if conn is not None:
+                conn.close() 
+
         
 # --------------------------------- testing 
     
