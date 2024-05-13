@@ -1,0 +1,35 @@
+{% extends 'template.html' %}
+
+{% block content %}
+
+<div id="edit-recipe-container">
+    <!-- <form action="/editRecipe" method="post"> -->
+    <form action="{{ url_for('editRecipe', recID=recID) }}" method="post">
+
+        <!-- hidden elements to send back to flask route-->
+        <input type="hidden" name="recID" value="{{ recID }}">
+        <input type="hidden" name="original_recipe_name" value="{{ recipe_name }}">
+
+        <label for="Recipe Name">Recipe Name:</label>
+        <input type="text" id="edit_recipe_name" name="edit_recipe_name" value="{{ recipe_name }}">
+        <br><br>
+
+        <label for="ingredient">Ingredients: </label><br>
+        {% for ing in ingredients %}
+            <input type="text" class="ingredient" name="ingredient" value="{{ ing }}">
+        {% endfor %}
+
+        <br><br>
+
+        <label for="ingredients">Instructions: </label><br>
+        {% for instr in instructions %}
+            <input type="text" class="instruction" name="instruction" value="{{ instr }}">
+        {% endfor %}
+
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+{% endblock %}
