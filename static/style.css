@@ -73,6 +73,17 @@ a {
     margin-right: 15%;
 }
 
+#edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    /* justify-content: space-around; */
+}
+
+/* ----------------------------- editRecipes.html */
+#edit-recipe-container {
+    margin-top: 25px;
+    text-align: center;
+}
 
 /* ----------------------------- about.html */
 #about-container {
@@ -160,6 +171,9 @@ increases font size for smaller screens */
         margin-left: 5%;
         margin-right: 5%;
     }
+
+
+    /* ----------------------------- editRecipes.html */
 
 
     /* ----------------------------- about.html */
