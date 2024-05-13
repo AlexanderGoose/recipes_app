@@ -1,6 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
-from test_data import data
-import psycopg2
+from flask import Flask, render_template, request
 from dbAPI import DataBaseAPI
 
 app = Flask(__name__)
@@ -16,11 +14,7 @@ User will then navigate via navbar to where they want to go
 def home():
     # if DB doesn't exist, create it!
     dbAPI = DataBaseAPI()
-    # dbName = 'recipe.db'
     dbAPI.create()
-    # conn = psycopg2.connect("postgres://xvwhmevsifgbur:1ded6238d2e4c0f2fa5b574f43bb82c47c7d899ddb39f222874a90d872907d1a@ec2-52-72-109-141.compute-1.amazonaws.com:5432/d3o4h6fng8cunu")
-    # conn.close()
-    #return "Database connection successful."
     return render_template('index.html')
 
 
@@ -31,17 +25,15 @@ This route will simply show a list of all recipes that the user
 has access to. When a recipe is clicked, it will take to viewRec
 and fill in the <dbName> and <int:recID>
 """
-# @app.route('/recipes/<dbName>', methods=['GET', 'POST'])
-# def recipes(dbName):
 @app.route('/recipes', methods=['GET', 'POST'])
 def recipes():
 
     # here we grab the recipe names
     dbAPI = DataBaseAPI()
-    #recipes = dbAPI.fetchRecipeNames(dbName)
     recipes = dbAPI.fetchRecipeNames()
 
     return render_template('recipes.html', recipes=recipes)
+
 
 
 # -------------------------------------------- view recipe
@@ -62,16 +54,7 @@ def viewRec(recID):
     return render_template('viewRecipes.html', recipe_name=recipe_name, 
                            ingredients=ingredients, instructions=instructions, recID=recID)
 
-
-@app.route('/beginEditRecipe/<int:recID>', methods=['POST'])
-def beginEditRecipe(recID):
-    if request.method == 'POST':
-        dbAPI = DataBaseAPI()
-        recipe_name, ingredients, instructions = dbAPI.getFullRecipe(recID)
-        return render_template('editRecipe.html', recID=recID, recipe_name=recipe_name,
-                               ingredients=ingredients, instructions=instructions)
     
-
 
 # -------------------------------------------- add recipe
 """
@@ -94,18 +77,36 @@ def add_recipe():
 
         # creating an instance of the class
         dbAPI = DataBaseAPI()
-        #dbAPI.fill(dbName, recipe_name, ingredients, instructions)
         dbAPI.fill(recipe_name, ingredients, instructions)
+
+        recID = dbAPI.getID(recipe_name)
         
-        return render_template('viewRecipes.html', recipe_name=recipe_name, 
+        return render_template('viewRecipes.html', recID=recID, recipe_name=recipe_name, 
                                ingredients=ingredients, instructions=instructions)
-                            #    rec_id=rec_id)
 
     return render_template('addRecipe.html')
 
 
 
+# -------------------------------------------- begin edit recipe
+"""
+renders recipe data into a form. allows for editing. form send to editRecipe
+"""
+@app.route('/beginEditRecipe/<int:recID>', methods=['POST'])
+def beginEditRecipe(recID):
+    if request.method == 'POST':
+        dbAPI = DataBaseAPI()
+        recipe_name, ingredients, instructions = dbAPI.getFullRecipe(recID)
+        return render_template('editRecipe.html', recID=recID, recipe_name=recipe_name,
+                               ingredients=ingredients, instructions=instructions)
 
+
+
+# -------------------------------------------- edit recipe
+"""
+retrieves form data. sends data to db editRecipe func, then
+reloads new recipe data to be viewed.
+"""
 @app.route('/editRecipe/<int:recID>', methods=['GET', 'POST'])
 def editRecipe(recID):
     if request.method == 'POST':
@@ -130,17 +131,29 @@ def editRecipe(recID):
         # render new recipe details
         return render_template('viewRecipes.html', recipe_name=recipe_name,
                                ingredients=ingredients, instructions=instructions, recID=recID)
-        # return "<h1>Edited</h1>"
-    # return "nope"
 
+
+@app.route('/deleteRecipe/<int:recID>', methods=['POST'])
+def deleteRecipe(recID):
+    if request.method == 'POST':
+        dbAPI = DataBaseAPI()
+        dbAPI.deleteRecipe(recID)
+
+        recipes = dbAPI.fetchRecipeNames()
+
+        return render_template('recipes.html', recipes=recipes)
+        #return render_template('recipes.html')
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+
+
 # -------------------------------------------- RUNS APP
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 #####################################################
