@@ -1,8 +1,15 @@
 /* ----------------------------- General Styling */
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
 body {
     font-family: "Helvetica Neue", Arial, sans-serif;
     font-weight: 300; 
-    background-color: #F5FFFA;
+    /* background-color: #F5FFFA; */
+    background: linear-gradient(to bottom, white, #5F9EA0);
     color: #2F4F4F;
 }
 
@@ -17,6 +24,7 @@ a {
     justify-content: space-around;
     margin-left: 25%;
     margin-right: 25%;
+    margin-top: 10px;
 }
 
 .navbar_item {
@@ -44,13 +52,15 @@ a {
 
 /* ----------------------------- index.html */
 .slogan {
-    margin-top: 100px;
+    margin-top: 150px;
+    font-size: 50px;
     text-align: center;
 }
 
 .homepage_text {
     margin-left: 25%;
     margin-right: 25%;
+    font-size: 22px;
     text-align: center;
 }
 
@@ -60,10 +70,31 @@ a {
     margin-top: 25px;
     margin-left: 25%;
     margin-right: 25%;
+    border-radius: 10px;
+    background-color: #FFFAF0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* padding: 5px; */
+}
+
+.recipe_list_title {
+    font-size: 30px;
+    margin-left: 5px;
 }
 
 .recipe_link {
-    color:#2F4F4F; 
+    color:#2F4F4F;
+    font-size: 20px; 
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.recipe_link:hover {
+    color: #556B2F;
+}
+
+.recipe-list-ul {
+    list-style-type: none;
+    /* padding: 5px; */
 }
 
 

@@ -4,7 +4,7 @@
 {% block content %}
 <div class="recipe_list_container">
     <h3 class="recipe_list_title">Recipes:</h3>
-    <ul>
+    <ul class="recipe-list-ul">
         <!-- recipes is a tuple of name, recID pulled in fetchRecipeNames.
         creates a list element for each recipe in the DB and links to it -->
         {% for name, recID in recipes %}
