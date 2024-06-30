@@ -10,6 +10,7 @@ body {
     font-weight: 300; 
     /* background-color: #F5FFFA; */
     background: linear-gradient(to bottom, white, #5F9EA0);
+    background-attachment: fixed;
     color: #2F4F4F;
 }
 
@@ -55,6 +56,8 @@ a {
     margin-top: 150px;
     font-size: 50px;
     text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .homepage_text {
@@ -71,9 +74,9 @@ a {
     margin-left: 25%;
     margin-right: 25%;
     border-radius: 10px;
-    background-color: #FFFAF0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* padding: 5px; */
+    background-color: #F8F8FF;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    padding: 5px;
 }
 
 .recipe_list_title {
@@ -169,7 +172,9 @@ increases font size for smaller screens */
 
     /* ----------------------------- index.html */
     .slogan {
-        font-size: 30px;
+        font-size: 25px;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
     .homepage_text {
