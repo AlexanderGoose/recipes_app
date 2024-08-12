@@ -215,7 +215,7 @@ class DataBaseAPI():
         
 
         
-    # --------------------------------- delete
+    # --------------------------------- gets the ID for a recipe
     def getID(self, recName):
         conn = None
         try:
