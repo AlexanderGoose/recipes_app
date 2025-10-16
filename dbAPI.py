@@ -3,6 +3,9 @@ import psycopg2
 from psycopg2 import Error
 import os
 
+# this now uses a local host, possible by using postgres.app
+# while it runs in the home bar, we can connect to it's 3 databases
+# learned using: https://www.digitalocean.com/community/tutorials/how-to-use-a-postgresql-database-in-a-flask-application
 
 class DataBaseAPI():
     # --------------------------------- create table
@@ -12,10 +15,14 @@ class DataBaseAPI():
     def create(self):
         conn = None
         try:
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
+            #database_url = os.getenv('DATABASE_URL')
+            #if database_url is None:
+            #    raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            #conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             cur = conn.cursor()
 
             cur.execute("""CREATE TABLE IF NOT EXISTS Recipe(
@@ -54,11 +61,14 @@ class DataBaseAPI():
     def fill(self, recName, ingredients, instructions):
         conn = None
         try:
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
-            
+            # database_url = os.getenv('DATABASE_URL')
+            # if database_url is None:
+            #     raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            # conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             cur = conn.cursor()
 
             cur.execute("INSERT INTO Recipe (recName) VALUES(%s) RETURNING recID", (recName,))
@@ -88,10 +98,14 @@ class DataBaseAPI():
     def fetchRecipeNames(self):
         conn = None
         try:
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
+            # database_url = os.getenv('DATABASE_URL')
+            # if database_url is None:
+            #     raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            # conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             cur = conn.cursor()
 
             # grab all recipe names
@@ -117,11 +131,14 @@ class DataBaseAPI():
         conn = None
         try:
             # first, retrieve recipes from db
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
-            
+            # database_url = os.getenv('DATABASE_URL')
+            # if database_url is None:
+            #     raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            # conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             cur = conn.cursor()
 
             # grabs recipe name
@@ -150,11 +167,14 @@ class DataBaseAPI():
     def editRecipe(self, origName, recName, ingredients, instructions):
         conn = None
         try:
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
-            
+            # database_url = os.getenv('DATABASE_URL')
+            # if database_url is None:
+            #     raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            # conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             cur = conn.cursor()
 
             # grab recID using name (FIGURE OUT HOW TO SEND IT VIA ROUTE)
@@ -192,10 +212,14 @@ class DataBaseAPI():
     def deleteRecipe(self, recID):
         conn = None
         try:
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
+            # database_url = os.getenv('DATABASE_URL')
+            # if database_url is None:
+            #     raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            # conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             
             cur = conn.cursor()
 
@@ -219,11 +243,14 @@ class DataBaseAPI():
     def getID(self, recName):
         conn = None
         try:
-            database_url = os.getenv('DATABASE_URL')
-            if database_url is None:
-                raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
-            conn = psycopg2.connect(database_url)
-            
+            # database_url = os.getenv('DATABASE_URL')
+            # if database_url is None:
+            #     raise Exception("DATABASE_URL not found. Check your Heroku configuration.")
+            # conn = psycopg2.connect(database_url)
+            conn = psycopg2.connect(
+                host='localhost',
+                database='goose',
+            )
             cur = conn.cursor()
 
             cur.execute("SELECT recID FROM Recipe WHERE recName=%s", (recName,))
