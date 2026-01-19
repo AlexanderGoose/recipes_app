@@ -45,7 +45,7 @@ a {
     width: 50%;
 }
 
-.add_recipe_container {
+#add_recipe_container {
     margin-top: 25px;
     text-align: center;
 }
